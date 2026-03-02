@@ -1,0 +1,36 @@
+services:
+  # ==================== Backend (FastAPI) ====================
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: merge-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      # Persist output directories
+      - ./pipeline_output:/app/pipeline_output
+      - ./audio_output:/app/audio_output
+      # Mount music for easy updates without rebuild
+      - ./music:/app/music
+      # Mount test_demo for batch demo images
+      - ./test_demo:/app/test_demo
+      # Mount YouTube OAuth credentials (token.json is read/write for token refresh)
+      - ./token.json:/app/token.json
+      - ./client_secret_423544055327-tj2t94kgbi8utnnap33p0i6lsk550slb.apps.googleusercontent.com.json:/app/client_secret_423544055327-tj2t94kgbi8utnnap33p0i6lsk550slb.apps.googleusercontent.com.json:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TZ=Asia/Ho_Chi_Minh
+    restart: unless-stopped
+
+  # ==================== Frontend (React + Nginx) ====================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: merge-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
