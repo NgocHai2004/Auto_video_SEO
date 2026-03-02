@@ -1,0 +1,36 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Node (frontend handled by its own Dockerfile context)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Output files (mounted as volumes)
+pipeline_output/
+audio_output/
+
+# Gradio cache
+.gradio/
+
+# Misc
+*.mp3
+*.mp4
+*.wav
+edge_output.mp3
+generated_audio.mp3
+merged_output.mp4
+output.mp3
+client_secret_*.json
